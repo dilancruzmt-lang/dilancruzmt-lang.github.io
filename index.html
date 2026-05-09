@@ -10,6 +10,7 @@ body{
     color:white;
     font-family:Arial;
     text-align:center;
+    overflow-x:hidden;
 }
 
 h1{
@@ -53,6 +54,7 @@ h1{
     justify-content:center;
     flex-direction:column;
     box-shadow:0 0 20px rgba(255,255,255,0.2);
+    transition:0.3s;
 }
 
 .actions{
@@ -66,6 +68,11 @@ h1{
     border:none;
     border-radius:15px;
     cursor:pointer;
+    transition:0.2s;
+}
+
+.actions button:hover{
+    transform:scale(1.1);
 }
 
 .result{
@@ -89,6 +96,50 @@ h1{
     50%{transform:translateX(-5px);}
     75%{transform:translateX(5px);}
     100%{transform:translateX(0);}
+}
+
+.smoke{
+    position:fixed;
+    font-size:50px;
+    animation:smokeUp 2s linear forwards;
+    pointer-events:none;
+}
+
+@keyframes smokeUp{
+    0%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+
+    100%{
+        opacity:0;
+        transform:translateY(-200px) scale(2);
+    }
+}
+
+.flash{
+    animation:flashScreen 0.3s;
+}
+
+@keyframes flashScreen{
+    0%{background:white;}
+    100%{background:#1b1b1b;}
+}
+
+.liquid-blue{
+    background:linear-gradient(to top,#3498db 60%,white 60%);
+}
+
+.liquid-red{
+    background:linear-gradient(to top,#e74c3c 60%,white 60%);
+}
+
+.liquid-green{
+    background:linear-gradient(to top,#2ecc71 60%,white 60%);
+}
+
+.liquid-purple{
+    background:linear-gradient(to top,#9b59b6 60%,white 60%);
 }
 </style>
 </head>
@@ -133,10 +184,22 @@ function addChemical(chemical){
     if(tube1 === ""){
         tube1 = chemical;
         document.getElementById("tube1").innerHTML = chemical;
+        let tube = document.getElementById("tube1");
+
+if(chemical.includes("Agua")) tube.className = "tube liquid-blue";
+if(chemical.includes("Ácido")) tube.className = "tube liquid-green";
+if(chemical.includes("Fuego")) tube.className = "tube liquid-red";
+if(chemical.includes("Potasio")) tube.className = "tube liquid-purple";
     }
     else if(tube2 === ""){
         tube2 = chemical;
         document.getElementById("tube2").innerHTML = chemical;
+        let tube = document.getElementById("tube1");
+
+if(chemical.includes("Agua")) tube.className = "tube liquid-blue";
+if(chemical.includes("Ácido")) tube.className = "tube liquid-green";
+if(chemical.includes("Fuego")) tube.className = "tube liquid-red";
+if(chemical.includes("Potasio")) tube.className = "tube liquid-purple";
     }
 
 }
@@ -158,6 +221,8 @@ function mix(){
         (tube2.includes("Agua") && tube1.includes("Sodio"))
     ){
         result = "💥 ¡Explosión de sodio!";
+        createSmoke();
+flashScreen();
         explosionEffect();
     }
 
@@ -173,6 +238,8 @@ function mix(){
         (tube2.includes("Ácido") && tube1.includes("Sodio"))
     ){
         result = "⚡ Reacción violenta.";
+        createSmoke();
+flashScreen();
         explosionEffect();
     }
 
@@ -188,6 +255,8 @@ function mix(){
         (tube2.includes("Hidrógeno") && tube1.includes("Fuego"))
     ){
         result = "💣 ¡Explosión de hidrógeno!";
+        createSmoke();
+flashScreen();
         explosionEffect();
     }
 
@@ -203,6 +272,8 @@ function mix(){
         (tube2.includes("Potasio") && tube1.includes("Agua"))
     ){
         result = "💥💣 Reacción extremadamente violenta.";
+        createSmoke();
+flashScreen();
         explosionEffect();
     }
 
@@ -229,8 +300,11 @@ function resetLab(){
     tube1 = "";
     tube2 = "";
 
-    document.getElementById("tube1").innerHTML = "Tubo 1";
-    document.getElementById("tube2").innerHTML = "Tubo 2";
+  document.getElementById("tube1").innerHTML = "Tubo 1";
+document.getElementById("tube2").innerHTML = "Tubo 2";
+
+document.getElementById("tube1").className = "tube";
+document.getElementById("tube2").className = "tube";
     document.getElementById("result").innerHTML = "Laboratorio limpiado.";
 
 }

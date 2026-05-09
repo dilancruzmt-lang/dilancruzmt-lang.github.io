@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Mini Laboratorio</title>
+<title>Laboratorio de dilancruzmt-lang</title>
 
 <style>
 body{
@@ -16,6 +16,10 @@ h1{
     margin-top:20px;
 }
 
+.chemicals{
+    margin-top:20px;
+}
+
 .chemicals button{
     margin:10px;
     padding:15px;
@@ -23,6 +27,11 @@ h1{
     border:none;
     border-radius:15px;
     cursor:pointer;
+    transition:0.2s;
+}
+
+.chemicals button:hover{
+    transform:scale(1.1);
 }
 
 .tubes{
@@ -33,8 +42,8 @@ h1{
 }
 
 .tube{
-    width:120px;
-    height:220px;
+    width:140px;
+    height:240px;
     background:white;
     border-radius:0 0 30px 30px;
     color:black;
@@ -43,11 +52,43 @@ h1{
     align-items:center;
     justify-content:center;
     flex-direction:column;
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
+}
+
+.actions{
+    margin-top:25px;
+}
+
+.actions button{
+    margin:10px;
+    padding:15px 30px;
+    font-size:20px;
+    border:none;
+    border-radius:15px;
+    cursor:pointer;
 }
 
 .result{
     margin-top:30px;
-    font-size:25px;
+    font-size:28px;
+    background:#2a2a2a;
+    padding:20px;
+    width:60%;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius:20px;
+}
+
+.explosion{
+    animation:shake 0.3s infinite;
+}
+
+@keyframes shake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(5px);}
+    50%{transform:translateX(-5px);}
+    75%{transform:translateX(5px);}
+    100%{transform:translateX(0);}
 }
 </style>
 </head>
@@ -61,6 +102,12 @@ h1{
     <button onclick="addChemical('🔥 Fuego')">🔥 Fuego</button>
     <button onclick="addChemical('🧂 Sodio')">🧂 Sodio</button>
     <button onclick="addChemical('🧪 Ácido')">🧪 Ácido</button>
+    <button onclick="addChemical('🍶 Alcohol')">🍶 Alcohol</button>
+    <button onclick="addChemical('💨 Hidrógeno')">💨 Hidrógeno</button>
+    <button onclick="addChemical('🌬️ Oxígeno')">🌬️ Oxígeno</button>
+    <button onclick="addChemical('🟣 Potasio')">🟣 Potasio</button>
+    <button onclick="addChemical('🟢 Cloro')">🟢 Cloro</button>
+    <button onclick="addChemical('⚪ Magnesio')">⚪ Magnesio</button>
 </div>
 
 <div class="tubes">
@@ -68,9 +115,9 @@ h1{
     <div class="tube" id="tube2">Tubo 2</div>
 </div>
 
-<div style="margin-top:20px;">
-    <button onclick="mix()">MEZCLAR</button>
-    <button onclick="resetLab()">LIMPIAR</button>
+<div class="actions">
+    <button onclick="mix()">🧪 MEZCLAR</button>
+    <button onclick="resetLab()">🧹 LIMPIAR</button>
 </div>
 
 <div class="result" id="result">
@@ -82,6 +129,7 @@ let tube1 = "";
 let tube2 = "";
 
 function addChemical(chemical){
+
     if(tube1 === ""){
         tube1 = chemical;
         document.getElementById("tube1").innerHTML = chemical;
@@ -90,16 +138,27 @@ function addChemical(chemical){
         tube2 = chemical;
         document.getElementById("tube2").innerHTML = chemical;
     }
+
+}
+
+function explosionEffect(){
+    document.body.classList.add("explosion");
+
+    setTimeout(() => {
+        document.body.classList.remove("explosion");
+    }, 700);
 }
 
 function mix(){
+
     let result = "😐 Nada ocurrió.";
 
     if(
         (tube1.includes("Agua") && tube2.includes("Sodio")) ||
         (tube2.includes("Agua") && tube1.includes("Sodio"))
     ){
-        result = "💥 ¡Explosión!";
+        result = "💥 ¡Explosión de sodio!";
+        explosionEffect();
     }
 
     if(
@@ -114,18 +173,66 @@ function mix(){
         (tube2.includes("Ácido") && tube1.includes("Sodio"))
     ){
         result = "⚡ Reacción violenta.";
+        explosionEffect();
+    }
+
+    if(
+        (tube1.includes("Alcohol") && tube2.includes("Fuego")) ||
+        (tube2.includes("Alcohol") && tube1.includes("Fuego"))
+    ){
+        result = "🔥 El alcohol se incendió.";
+    }
+
+    if(
+        (tube1.includes("Hidrógeno") && tube2.includes("Fuego")) ||
+        (tube2.includes("Hidrógeno") && tube1.includes("Fuego"))
+    ){
+        result = "💣 ¡Explosión de hidrógeno!";
+        explosionEffect();
+    }
+
+    if(
+        (tube1.includes("Oxígeno") && tube2.includes("Fuego")) ||
+        (tube2.includes("Oxígeno") && tube1.includes("Fuego"))
+    ){
+        result = "🔥 El fuego aumentó intensamente.";
+    }
+
+    if(
+        (tube1.includes("Potasio") && tube2.includes("Agua")) ||
+        (tube2.includes("Potasio") && tube1.includes("Agua"))
+    ){
+        result = "💥💣 Reacción extremadamente violenta.";
+        explosionEffect();
+    }
+
+    if(
+        (tube1.includes("Cloro") && tube2.includes("Hidrógeno")) ||
+        (tube2.includes("Cloro") && tube1.includes("Hidrógeno"))
+    ){
+        result = "☠️ Gas peligroso liberado.";
+    }
+
+    if(
+        (tube1.includes("Magnesio") && tube2.includes("Fuego")) ||
+        (tube2.includes("Magnesio") && tube1.includes("Fuego"))
+    ){
+        result = "⚪ Luz blanca intensa.";
     }
 
     document.getElementById("result").innerHTML = result;
+
 }
 
 function resetLab(){
+
     tube1 = "";
     tube2 = "";
 
     document.getElementById("tube1").innerHTML = "Tubo 1";
     document.getElementById("tube2").innerHTML = "Tubo 2";
     document.getElementById("result").innerHTML = "Laboratorio limpiado.";
+
 }
 </script>
 

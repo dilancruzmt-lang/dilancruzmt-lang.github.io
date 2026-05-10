@@ -194,7 +194,7 @@ if(chemical.includes("Potasio")) tube.className = "tube liquid-purple";
     else if(tube2 === ""){
         tube2 = chemical;
         document.getElementById("tube2").innerHTML = chemical;
-        let tube = document.getElementById("tube1");
+        let tube = document.getElementById("tube2");
 
 if(chemical.includes("Agua")) tube.className = "tube liquid-blue";
 if(chemical.includes("Ácido")) tube.className = "tube liquid-green";
@@ -211,7 +211,37 @@ function explosionEffect(){
         document.body.classList.remove("explosion");
     }, 700);
 }
+function createSmoke(){
 
+    for(let i = 0; i < 8; i++){
+
+        let smoke = document.createElement("div");
+
+        smoke.innerHTML = "💨";
+        smoke.className = "smoke";
+
+        smoke.style.left = (window.innerWidth/2 + Math.random()*200 - 100) + "px";
+        smoke.style.top = (window.innerHeight/2) + "px";
+
+        document.body.appendChild(smoke);
+
+        setTimeout(() => {
+            smoke.remove();
+        },2000);
+
+    }
+
+}
+
+function flashScreen(){
+
+    document.body.classList.add("flash");
+
+    setTimeout(() => {
+        document.body.classList.remove("flash");
+    },300);
+
+}
 function mix(){
 
     let result = "😐 Nada ocurrió.";
